@@ -1,0 +1,1 @@
+ADD --no-red-zone to ld flags when building the kernel
