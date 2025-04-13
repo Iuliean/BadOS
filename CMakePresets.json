@@ -1,0 +1,30 @@
+{
+    "version": 10,
+    "cmakeMinimumRequired": { "major": 3, "minor": 30, "patch": 8},
+    "configurePresets":[
+        {
+            "name": "x86_64-elf",
+            "displayName": "x86_64-elf",
+            "toolchainFile": "${sourceDir}/toolchain/x86_64-elf.cmake",
+            "generator": "Unix Makefiles",
+            "installDir": "${sourceDir}/out/dist/x86_64-elf-Release",
+            "cacheVariables":{
+                "CMAKE_EXPORT_COMPILE_COMMANDS":{
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "CMAKE_BUILT_TYPE":{
+                    "type":"STRING",
+                    "value": "Release"
+                }
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Default x86_64",
+            "configurePreset": "x86_64-elf",
+            "verbose": true
+        }
+    ]
+}
