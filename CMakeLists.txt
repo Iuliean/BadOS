@@ -4,20 +4,23 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 set(ISO_SYSROOT ${CMAKE_INSTALL_PREFIX}/sysroot)
+include(cmake/Limine.cmake)
 
-find_program(GRUB2-MKRESCUE "grub2-mkrescue")
-
-if(NOT GRUB2-MKRESCUE)
-    message(FATAL_ERROR "Failed to find grub2-mkrescue")
-endif()
 
 add_subdirectory(kernel)
 
 project(BadOS)
 
+add_compile_options(-Wall -Wextra -Werror -Wpedantic)
+
 set(ISO_NAME "${CMAKE_PROJECT_NAME}.iso")
 
-add_custom_target(sysroot SOURCES sysroot/ DEPENDS kernel)
+add_custom_target(sysroot SOURCES sysroot/)
 
 install(DIRECTORY sysroot DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(CODE "execute_process(COMMAND grub2-mkrescue -o ${CMAKE_INSTALL_PREFIX}/BadOS.iso ${ISO_SYSROOT})")
+install(CODE "execute_process(COMMAND xorriso -as mkisofs -R -r -J -b boot/limine/limine-bios-cd.bin \
+        -no-emul-boot -boot-load-size 4 -boot-info-table -hfsplus \
+        -apm-block-size 2048 --efi-boot boot/limine/limine-uefi-cd.bin \
+        -efi-boot-part --efi-boot-image --protective-msdos-label \
+        ${ISO_SYSROOT} -o ${CMAKE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}.iso)")
+install(CODE "execute_process(COMMAND ${limine_SOURCE_DIR}/limine bios-install ${CMAKE_PROJECT_NAME}.iso)")
