@@ -13,6 +13,7 @@ PHDRS
     text PT_LOAD;
     rodata PT_LOAD;
     data PT_LOAD;
+    eh_frame PT_LOAD;
 }
 
 SECTIONS
@@ -51,6 +52,13 @@ SECTIONS
         *(.data .data.*)
     } :data
 
+    .init_array : {
+        __init_array = .;
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
+        KEEP(*(.init_array .ctors))
+        __init_array_end = .;
+    } :rodata
+
     /* NOTE: .bss needs to be the last thing mapped to :data, otherwise lots of */
     /* unnecessary zeros will be written to the binary. */
     /* If you need, for example, .init_array and .fini_array, those should be placed */
@@ -62,7 +70,6 @@ SECTIONS
 
     /* Discard .note.* and .eh_frame* since they may cause issues on some hosts. */
     /DISCARD/ : {
-        *(.eh_frame*)
         *(.note .note.*)
     }
 }
