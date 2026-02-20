@@ -6,10 +6,11 @@ set(CXX_EXTENSIONS OFF)
 set(ISO_SYSROOT ${CMAKE_INSTALL_PREFIX}/sysroot)
 include(cmake/Limine.cmake)
 
+project(BadOS)
 
+add_subdirectory(font)
 add_subdirectory(kernel)
 
-project(BadOS)
 
 add_compile_options(-Wall -Wextra -Werror -Wpedantic)
 

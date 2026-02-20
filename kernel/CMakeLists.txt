@@ -26,6 +26,6 @@ target_link_options(kernel PRIVATE
 )
 
 target_include_directories(kernel PRIVATE ${limine_INCLUDE_DIR} include)
-target_link_libraries(kernel)
+target_link_libraries(kernel PRIVATE fonts)
 
 install(TARGETS kernel DESTINATION ${ISO_SYSROOT}/boot)

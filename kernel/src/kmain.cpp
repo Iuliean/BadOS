@@ -4,12 +4,8 @@
 #include <stdbool.h>
 #include "limine.h"
 
-struct hello
-{
-    hello(): m(213) {}
-    int m;
-};
-static hello h;
+extern const unsigned char _binary_HUGE_VGA_F32_start[];
+extern const unsigned char _binary_HUGE_VGA_F32_end[];
 
 // Set the base revision to 3, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
@@ -73,12 +69,13 @@ extern "C" void kmain(void) {
 
     // Note: we assume the framebuffer model is RGB with 32-bit pixels.
     for (size_t i = 0; i < 100; i++) {
-        if (h.m == 213)
-        {
         volatile uint32_t *fb_ptr = (volatile uint32_t*) framebuffer->address;
         fb_ptr[i * (framebuffer->pitch / 4) + i] = 0xffffff;
-
-        }
+    }
+    int add = 0;
+    for (size_t idx = 0; idx < _binary_HUGE_VGA_F32_end - _binary_HUGE_VGA_F32_start; idx++)
+    {
+        add += _binary_HUGE_VGA_F32_start[idx];
     }
 
     // We're done, just hang...
