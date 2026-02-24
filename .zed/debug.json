@@ -1,0 +1,13 @@
+[
+  {
+    "label": "Debug Kernel",
+    "request": "attach",
+    "adapter": "GDB",
+    "target": "localhost:1234",
+    "program": "$ZED_WORKTREE_ROOT/build/kernle/kernel",
+    "targetCreateCommands": [
+      "target create $ZED_WORKTREE_ROOT/build/kernel/kernel",
+    ],
+    "processCreateCommands": ["gdb-remote localhost:1234"],
+  },
+]
