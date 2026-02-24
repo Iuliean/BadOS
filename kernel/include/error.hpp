@@ -13,12 +13,17 @@ namespace os
         out_of_bounds_access
     };
 
-    template<typename N>
-        requires std::is_enum_v<N>
+    /* @class error
+     * @brief The class acts as a generic container for multiple types of error.
+     * Each error group is defined by the error space namspace which is specified as a template parameter
+     * @tparam ErrNamespace a enum that contains all possible errors
+     */
+    template<typename ErrNamespace>
+        requires std::is_enum_v<ErrNamespace>
     class error
     {
     public:
-        constexpr explicit error(N type, const char* message, std::source_location source = {})
+        constexpr explicit error(ErrNamespace type, const char* message, std::source_location source = {})
             : m_type(type),
               m_message(message),
               m_source(std::move(source))
@@ -31,7 +36,7 @@ namespace os
         constexpr std::size_t line() const { return static_cast<std::size_t>(m_source.line()); }
 
     private:
-        N m_type;
+        ErrNamespace m_type;
         const char* m_message;
         std::source_location m_source;
     };
