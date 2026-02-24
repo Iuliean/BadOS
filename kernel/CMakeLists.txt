@@ -2,7 +2,12 @@ project (kernel CXX)
 
 add_executable(kernel
     src/kmain.cpp
-    include/memory.hpp
+    src/framebuffer.cpp
+    src/font/font.cpp
+    include/utils.hpp
+    include/error.hpp
+    include/framebuffer.hpp
+    include/font/font.hpp
 )
 
 
@@ -26,6 +31,9 @@ target_link_options(kernel PRIVATE
 )
 
 target_include_directories(kernel PRIVATE ${limine_INCLUDE_DIR} include)
-target_link_libraries(kernel PRIVATE fonts)
+target_link_libraries(kernel
+    PRIVATE fonts
+    libbad
+)
 
 install(TARGETS kernel DESTINATION ${ISO_SYSROOT}/boot)
