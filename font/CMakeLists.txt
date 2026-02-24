@@ -5,5 +5,5 @@ add_custom_command(
     DEPENDS HUGE-VGA.F32
 )
 
-add_library(fonts STATIC font.obj)
+add_library(fonts STATIC ${CMAKE_CURRENT_BINARY_DIR}/font.obj)
 set_target_properties(fonts PROPERTIES LINKER_LANGUAGE CXX)
