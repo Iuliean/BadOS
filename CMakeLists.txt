@@ -8,6 +8,7 @@ include(cmake/Limine.cmake)
 
 project(BadOS)
 
+add_subdirectory(libbad)
 add_subdirectory(font)
 add_subdirectory(kernel)
 
