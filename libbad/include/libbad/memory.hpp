@@ -68,6 +68,17 @@ namespace bad
 
         return 0;
     }
+
+    constexpr std::size_t strlen(const char* string) noexcept
+    {
+        std::size_t size = 0;
+        while(*string != '\0')
+        {
+            ++size; ++string;
+        }
+
+        return size;
+    }
 }
 
 #endif //LIBBAG_MEMORY_HPP
