@@ -1,4 +1,4 @@
-#include "font/font.hpp"
+#include "console/font/font.hpp"
 
 extern const std::byte _binary_HUGE_VGA_F32_start[];
 extern const std::byte _binary_HUGE_VGA_F32_end[];

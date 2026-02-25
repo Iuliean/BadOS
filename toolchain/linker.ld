@@ -13,7 +13,6 @@ PHDRS
     text PT_LOAD;
     rodata PT_LOAD;
     data PT_LOAD;
-    eh_frame PT_LOAD;
 }
 
 SECTIONS
@@ -45,6 +44,13 @@ SECTIONS
         *(.rodata .rodata.*)
     } :rodata
 
+    .init_array : {
+        __init_array = .;
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
+        KEEP(*(.init_array .ctors))
+        __init_array_end = .;
+    } :rodata
+
     /* Move to the next memory page for .data */
     . = ALIGN(CONSTANT(MAXPAGESIZE));
 
@@ -52,12 +58,7 @@ SECTIONS
         *(.data .data.*)
     } :data
 
-    .init_array : {
-        __init_array = .;
-        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
-        KEEP(*(.init_array .ctors))
-        __init_array_end = .;
-    } :rodata
+
 
     /* NOTE: .bss needs to be the last thing mapped to :data, otherwise lots of */
     /* unnecessary zeros will be written to the binary. */

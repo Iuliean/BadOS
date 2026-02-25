@@ -1,11 +1,11 @@
-#include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <bitset>
-#include "font/font.hpp"
+#include "console/console.hpp"
+#include "console/font/font.hpp"
 #include "framebuffer.hpp"
 #include "libbad/color.hpp"
 #include "limine.h"
@@ -45,7 +45,7 @@ static void hcf(void) noexcept{
     }
 }
 
-// The following will be our kernel's entry point.
+// The following will be our kernel's entry point.d
 // If renaming kmain() to something else, make sure to change the
 // linker script accordingly.
 extern "C" void kmain(void) {
@@ -57,6 +57,8 @@ extern "C" void kmain(void) {
     if (LIMINE_BASE_REVISION_SUPPORTED == false) {
         hcf();
     }
+
+    os::console::get_console().println("Hello World!");
 
     hcf();
 }

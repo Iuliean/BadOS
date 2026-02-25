@@ -3,11 +3,16 @@ project (kernel CXX)
 add_executable(kernel
     src/kmain.cpp
     src/framebuffer.cpp
-    src/font/font.cpp
+
+    src/console/console.cpp
+    src/console/font/font.cpp
+
     include/utils.hpp
     include/error.hpp
     include/framebuffer.hpp
-    include/font/font.hpp
+
+    include/console/console.hpp
+    include/console/font/font.hpp
 )
 
 
