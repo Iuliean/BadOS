@@ -65,9 +65,9 @@ struct PACKED gdt_entry
 
 struct PACKED gdt
 {
-    std::uint64_t null;
-    std::uint64_t code_segment;
-    std::uint64_t data_segment;
+    gdt_entry null;
+    gdt_entry code_segment;
+    gdt_entry data_segment;
 };
 
 struct PACKED gdt_pseudo_descriptor

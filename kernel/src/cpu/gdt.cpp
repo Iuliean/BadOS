@@ -17,22 +17,19 @@ namespace os::gdt
 
     void init()
     {
-        //bad::memset(&gdt_table.code_segment, 0, sizeof(struct gdt));
+        bad::memset(&gdt_table.code_segment, 0, sizeof(struct gdt_entry));
 
-        //gdt_table.code_segment.type = code_eoe;
-        //gdt_table.code_segment.s = 1;
-        //gdt_table.code_segment.dpl = 0;
-        //gdt_table.code_segment.p = 1;
-        //gdt_table.code_segment.l = 1;
-        //gdt_table.code_segment.db = 0;
-//
-        //gdt_table.data_segment.type = data_rwa;
-        //gdt_table.data_segment.s = 1;
-        //gdt_table.data_segment.p = 1;
+        gdt_table.code_segment.type = code_eoe;
+        gdt_table.code_segment.s = 1;
+        gdt_table.code_segment.dpl = 0;
+        gdt_table.code_segment.p = 1;
+        gdt_table.code_segment.l = 1;
+        gdt_table.code_segment.db = 0;
 
-        gdt_table.null = 0;
-        gdt_table.code_segment = 0x00af9b000000ffff;
-        gdt_table.data_segment = 0x00af93000000ffff;
+        gdt_table.data_segment.type = data_rwa;
+        gdt_table.data_segment.s = 1;
+        gdt_table.data_segment.p = 1;
+
 
         pseudo_descriptor.base_ptr = &gdt_table;
         pseudo_descriptor.limit = sizeof(gdt_table) - 1;

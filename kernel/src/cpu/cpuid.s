@@ -16,10 +16,6 @@ is_pml5_supported:
 
 .global load_gdt_from
 load_gdt_from:
-    push rbp
-    mov rbp, rsp
-    sub rsp, 0x8
-
     lgdt [rdi]
 
 reload_cs:
@@ -36,5 +32,4 @@ reload_segments:
     mov gs, ax
     mov ss, ax
 
-    pop rbp
     ret
