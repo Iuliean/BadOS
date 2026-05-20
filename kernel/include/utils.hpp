@@ -9,6 +9,8 @@
     if(v) return v;\
 }while(0)
 
+#define PACKED __attribute__((packed))
+
 namespace utils
 {
 

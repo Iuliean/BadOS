@@ -6,9 +6,12 @@
 #include <bitset>
 #include "console/console.hpp"
 #include "console/font/font.hpp"
+#include "cpu/gdt.hpp"
 #include "framebuffer.hpp"
 #include "libbad/color.hpp"
+#include "libbad/string_view.hpp"
 #include "limine.h"
+#include "cpu/cpu.h"
 #include <span>
 
 
@@ -23,8 +26,29 @@ static volatile LIMINE_BASE_REVISION(3);
 // the compiler does not optimise them away, so, usually, they should
 // be made volatile or equivalent, _and_ they should be accessed at least
 // once or marked as used with the "used" attribute as done here.
+__attribute__((used, section(".limine_requests")))
+static volatile struct limine_memmap_request limine_map = {
+    .id = LIMINE_MEMMAP_REQUEST,
+    .revision = 0,
+};
 
 
+
+static bad::string_view map_type_to_string(std::uint64_t v)
+{
+    switch(v)
+    {
+        case 0: return bad::string_view{"USABLE"};
+        case 1: return bad::string_view{"RESERVED"};
+        case 2: return bad::string_view{"ACPI RECLAIMABLE"};
+        case 3: return bad::string_view{"ACPI_NVS"};
+        case 4: return bad::string_view{"BAD MEMORY"};
+        case 5: return bad::string_view{"BOOT RECLAIMABLE"};
+        case 6: return bad::string_view{"EXE AND MODULES"};
+        case 7: return bad::string_view{"FRAMEBUFFER"};
+        case 8: return bad::string_view{"RESERVED MAPPED"};
+    }
+}
 
 // Finally, define the start and end markers for the Limine requests.
 // These can also be moved anywhere, to any .c file, as seen fit.
@@ -58,7 +82,14 @@ extern "C" void kmain(void) {
         hcf();
     }
 
-    os::console::get_console().println("Hello World!");
+    os::gdt::init();
+
+    for(std::size_t count = 0; count < limine_map.response->entry_count; ++count)
+    {
+        const auto& entry = limine_map.response->entries[count];
+        os::console::get_console().println(map_type_to_string(entry->type));
+    }
+
 
     hcf();
 }

@@ -85,10 +85,10 @@ namespace os
 
     void console::new_line()
     {
-        m_cursor.x = 0;
+        m_cursor.y = 0;
 
-        if (m_cursor.y != m_height)
-            ++m_cursor.y;
+        if (m_cursor.x != m_height)
+            ++m_cursor.x;
     }
 
 }
