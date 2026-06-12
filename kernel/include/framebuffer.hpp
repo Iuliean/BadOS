@@ -1,7 +1,7 @@
 #ifndef FRAMEBUFFER_HPP
 #define FRAMEBUFFER_HPP
-#include "error.hpp"
 
+#include "libbad/error.hpp"
 #include "libbad/color.hpp"
 #include "libbad/span.hpp"
 
@@ -22,7 +22,7 @@ namespace os::framebuffer
      * @param[in] pixel_color, color of the renderd pixel
      * @return on error a kernel_error will be returned
      */
-    result<void> put_pixel(std::size_t x, std::size_t y, bad::color pixel_color);
+    bad::result<void> put_pixel(std::size_t x, std::size_t y, bad::color pixel_color);
 
     /*
      * @brief Renders a glyp (character font) starting from x,y coordinates
@@ -32,7 +32,7 @@ namespace os::framebuffer
      * @param[in] color, color of the resulting character. white by default
      * @return on error a kernel_error will be returned
      */
-    result<void> render_glyph_at(std::size_t x, std::size_t y, bad::span<const std::byte> glyph_data, bad::color color = bad::white);
+    bad::result<void> render_glyph_at(std::size_t x, std::size_t y, bad::span<const std::byte> glyph_data, bad::color color = bad::white);
 }
 
 

@@ -8,7 +8,6 @@
 #include <limine.h>
 #include <ranges>
 
-#include "error.hpp"
 #include "utils.hpp"
 
 __attribute__((used, section(".limine_requests")))
@@ -39,13 +38,13 @@ namespace os::framebuffer
         return (x * framebuffer.pitch) + (y * 4);
     }
 
-    result<void> put_pixel(std::size_t x, std::size_t y, bad::color color)
+    bad::result<void> put_pixel(std::size_t x, std::size_t y, bad::color color)
     {
         auto framebuffer = get_frame_buffer();
 
         if (x >= framebuffer.width || y >= framebuffer.height)
             return make_unexpected_error(
-                    generic_errors::out_of_bounds_access,
+                    bad::generic_errors::out_of_bounds_access,
                     "Coordinates are out of bounds of the frame buffer"
                 );
 
@@ -55,15 +54,15 @@ namespace os::framebuffer
             sizeof(bad::color)
         );
 
-        return result<void>{};
+        return bad::result<void>{};
     }
 
-    result<void> render_glyph_at(std::size_t x, std::size_t y, bad::span<const std::byte> glyph_data, bad::color color)
+    bad::result<void> render_glyph_at(std::size_t x, std::size_t y, bad::span<const std::byte> glyph_data, bad::color color)
     {
         if (x > (get_width() - 8))
-            return make_unexpected_error(generic_errors::out_of_bounds_access, "Glyph will not fit horizontally on screen");
+            return make_unexpected_error(bad::generic_errors::out_of_bounds_access, "Glyph will not fit horizontally on screen");
         if (y > (get_height() - glyph_data.size()))
-            return make_unexpected_error(generic_errors::out_of_bounds_access, "Glyph will not fit vertiaclly on screen");
+            return make_unexpected_error(bad::generic_errors::out_of_bounds_access, "Glyph will not fit vertiaclly on screen");
 
 
         for (auto [index, glyp_line] : std::views::enumerate(glyph_data))
@@ -77,7 +76,7 @@ namespace os::framebuffer
             }
         }
 
-        return result<void>{};
+        return bad::result<void>{};
     }
 
 }
