@@ -9,10 +9,11 @@ namespace bad::debugger
         [[noreturn]]
         inline void pseudo_break()
         {
-            asm volatile ("1: jmp 1b");
+            asm volatile ("hlt");
         }
     }
 
+    [[noreturn]]
     inline constexpr void assert(bool condition)
     {
         if (!condition)

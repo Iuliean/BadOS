@@ -7,8 +7,11 @@ add_library(libbad STATIC
     include/libbad/span.hpp
     include/libbad/string_view.hpp
     include/libbad/color.hpp
-    include/libbad/result.hpp
     include/libbad/memory.hpp
+    include/libbad/fixed_string.hpp
+    include/libbad/algorithm.hpp
+    include/libbad/error.hpp
+    include/libbad/expected.hpp
 )
 
 target_include_directories(libbad
