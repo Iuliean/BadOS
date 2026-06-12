@@ -1,8 +1,9 @@
-#include "cpu/gdt.hpp"
+#include "mem/gdt.hpp"
 #include "cpu/cpu.h"
 #include "libbad/memory.hpp"
+
+
 #include "limine.h"
-#include <cstdint>
 
 __attribute__((used, section(".limine_requests")))
 static volatile limine_kernel_address_request kmapping = {
@@ -10,14 +11,14 @@ static volatile limine_kernel_address_request kmapping = {
     .revision = 0
 };
 
-namespace os::gdt
+
+namespace os::mem::gdt
 {
     static struct gdt gdt_table;
-    static gdt_pseudo_descriptor pseudo_descriptor;
 
     void init()
     {
-        bad::memset(&gdt_table.code_segment, 0, sizeof(struct gdt_entry));
+        bad::memset(&gdt_table, 0, sizeof(struct gdt));
 
         gdt_table.code_segment.type = code_eoe;
         gdt_table.code_segment.s = 1;
@@ -31,9 +32,12 @@ namespace os::gdt
         gdt_table.data_segment.p = 1;
 
 
-        pseudo_descriptor.base_ptr = &gdt_table;
-        pseudo_descriptor.limit = sizeof(gdt_table) - 1;
-        
-        load_gdt_from(&pseudo_descriptor);
+        pseudo_descriptor pseudo_descriptor
+        {
+            .limit = sizeof(gdt_table) - 1,
+            .base_ptr = &gdt_table
+        };
+
+        os::cpu::load_gdt_from(&pseudo_descriptor);
     }
 }

@@ -1,5 +1,23 @@
 .intel_syntax noprefix
 
+.global cpu_info
+cpu_info:
+    mov eax, edi
+    mov ecx, esi
+
+    cpuid
+
+    mov rsi, 0x0
+    or  rsi, rax
+    shl rbx, 32
+    or  rsi, rbx
+    mov rax, rsi
+
+    shl rdx, 32
+    or rdx, rcx
+
+    ret
+
 .global is_pml5_supported
 is_pml5_supported:
 

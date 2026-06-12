@@ -4,9 +4,9 @@ add_executable(kernel
     src/kmain.cpp
     src/framebuffer.cpp
 
-    src/cpu/cpuid.s
-    src/cpu/memory.cpp
-    src/cpu/gdt.cpp
+    src/cpu/cpu.s
+    
+    src/mem/gdt.cpp
 
     src/console/console.cpp
     src/console/font/font.cpp
@@ -15,9 +15,9 @@ add_executable(kernel
     include/error.hpp
     include/framebuffer.hpp
 
+    include/mem/gdt.hpp
+
     include/cpu/cpu.h
-    include/cpu/gdt.hpp
-    include/cpu/memory.hpp
     
     include/console/console.hpp
     include/console/font/font.hpp
